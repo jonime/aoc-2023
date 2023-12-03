@@ -8,11 +8,11 @@ export const findGears = (input: string) => {
     ratios: number[];
   }> = [];
 
-  input.split(/\s*\n\s*/).flatMap((content, row, rows) => {
-    const rowsToScan = range(row - 1, row + 1);
+  const rows = input.split(/\s*\n\s*/);
 
-    Array.from(content.matchAll(/\d+/g)).flatMap(({ '0': code, index }) => {
-      const [connection] = rowsToScan
+  for (const [row, content] of rows.entries()) {
+    for (const { 0: code, index } of content.matchAll(/\d+/g)) {
+      const [connection] = range(row - 1, row + 1)
         .flatMap((row) =>
           range(index! - 1, index! + code.length).map((col) => ({
             row,
@@ -35,8 +35,8 @@ export const findGears = (input: string) => {
 
         gear.ratios.push(Number(code));
       }
-    });
-  });
+    }
+  }
 
   return gears
     .filter(({ ratios }) => ratios.length === 2)
