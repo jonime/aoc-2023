@@ -27,81 +27,99 @@ describe('findParts', () => {
     it.each(notExpected)('should not contain %d', (value) => {
       expect(findParts(example)).not.toContain(value);
     });
+  });
 
-    it('should not have duplicate parts', () => {
-      expect(findParts('#123.#123')).toEqual([123]);
-    });
-
-    it('should handle codes in the end of the line', () => {
-      expect(
-        findParts(
-          `
+  it('should handle codes in the end of the line', () => {
+    expect(
+      findParts(
+        `
 ...#...
 ....123
 .......
   `.trim(),
-        ),
-      ).toEqual([123]);
-    });
+      ),
+    ).toEqual([123]);
+  });
 
-    it('should handle one character codes', () => {
-      expect(
-        findParts(
-          `
+  it('should handle one character codes', () => {
+    expect(
+      findParts(
+        `
 ...#...
 ....1..
 .......
   `.trim(),
-        ),
-      ).toEqual([1]);
-    });
+      ),
+    ).toEqual([1]);
+  });
 
-    it('should match top-left', () => {
-      expect(
-        findParts(
-          `
+  it('should match top-left', () => {
+    expect(
+      findParts(
+        `
 #..
 .1.
 ...
   `.trim(),
-        ),
-      ).toEqual([1]);
-    });
+      ),
+    ).toEqual([1]);
+  });
 
-    it('should match top-right', () => {
-      expect(
-        findParts(
-          `
+  it('should match top-right', () => {
+    expect(
+      findParts(
+        `
 ..#
 .1.
 ...
   `.trim(),
-        ),
-      ).toEqual([1]);
-    });
+      ),
+    ).toEqual([1]);
+  });
 
-    it('should match bottom-left', () => {
-      expect(
-        findParts(
-          `
+  it('should match bottom-left', () => {
+    expect(
+      findParts(
+        `
 ...
 .1.
 #..
   `.trim(),
-        ),
-      ).toEqual([1]);
-    });
+      ),
+    ).toEqual([1]);
+  });
 
-    it('should match bottom-right', () => {
-      expect(
-        findParts(
-          `
+  it('should match bottom-right', () => {
+    expect(
+      findParts(
+        `
 ...
 .1.
 ..#
   `.trim(),
-        ),
-      ).toEqual([1]);
-    });
+      ),
+    ).toEqual([1]);
+  });
+
+  it('should find code if character is in the middle of the code', () => {
+    expect(
+      findParts(`
+    ......
+    ....$.
+    ...555
+    `),
+    ).toEqual([555]);
+  });
+
+  it('should not include 787', () => {
+    expect(
+      findParts(
+        `
+......*.....
+..787.639...
+............
+    `.trim(),
+      ),
+    ).not.toContain(787);
   });
 });

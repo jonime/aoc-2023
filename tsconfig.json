@@ -3,6 +3,7 @@
     "target": "ESNext",
     "lib": ["ESNext"],
     "noEmit": true,
-    "strict": true
+    "strict": true,
+    "moduleResolution": "Node"
   }
 }
