@@ -2,6 +2,14 @@ import { range } from '../common/array';
 import { multiply, sum } from '../common/math';
 import { readFile } from '../common/readFile';
 
+const getSurroundingPositions = (row: number, col: number, length: number) =>
+  range(row - 1, row + 1).flatMap((row) =>
+    range(col - 1, col + length).map((col) => ({
+      row,
+      col,
+    })),
+  );
+
 export const findGears = (input: string) => {
   const gears: Array<{
     connection: { row: number; col: number };
@@ -12,14 +20,11 @@ export const findGears = (input: string) => {
 
   for (const [row, content] of rows.entries()) {
     for (const { 0: code, index } of content.matchAll(/\d+/g)) {
-      const [connection] = range(row - 1, row + 1)
-        .flatMap((row) =>
-          range(index! - 1, index! + code.length).map((col) => ({
-            row,
-            col,
-          })),
-        )
-        .filter(({ row, col }) => rows[row]?.[col] === '*');
+      const [connection] = getSurroundingPositions(
+        row,
+        index!,
+        code.length,
+      ).filter(({ row, col }) => rows[row]?.[col] === '*');
 
       if (connection) {
         let gear = gears.find(
