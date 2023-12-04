@@ -5,3 +5,5 @@ export const range = (start: number, end: number) =>
 
 export const isUnique = <T>(item: T, index: number, array: T[]) =>
   array.indexOf(item) === index;
+
+export const isDefined = <T>(item: T): item is NonNullable<T> => item != null;
